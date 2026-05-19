@@ -4,11 +4,11 @@ A fully functional, modern e-commerce application built with Ruby on Rails 7+. T
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 Follow these step-by-step instructions to get a local copy of this project up and running on a brand-new development machine.
 
-### 📋 Prerequisites
+### Prerequisites
 
 Before setting up, make sure your system has the following core components installed:
 
@@ -22,9 +22,8 @@ Before setting up, make sure your system has the following core components insta
 ## 🛠️ Installation & Local Setup
 
 Open your computer's terminal application and run the following command blocks in sequence:
-
 1. Clone the Repository
-```bash
+bash
 git clone [https://github.com/YOUR_USERNAME/ruby-ecommerce-store.git](https://github.com/YOUR_USERNAME/ruby-ecommerce-store.git)
 cd ruby-ecommerce-store
 2. Install Project Dependencies
