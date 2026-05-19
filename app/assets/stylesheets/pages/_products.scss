@@ -1,0 +1,179 @@
+@import "../components/variables";
+
+.store-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+
+  .store-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+
+    h1 {
+      margin: 0;
+      color: #2c3e50;
+      font-size: 2.2rem;
+    }
+
+    .items-count {
+      margin: 0;
+      color: $slate;
+    }
+  }
+
+  // Responsive Grid System
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 30px;
+  }
+
+  // Product Card Structure
+  .product-card {
+    background: white;
+    border: 1px solid $border-color;
+    border-radius: $radius-md;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: $shadow;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+
+    &:hover {
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .image-container {
+      background: $bg-light;
+      height: 200px;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      
+      img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
+
+      .no-image {
+        color: #cbd5e1;
+        font-size: 0.9rem;
+      }
+    }
+
+    .card-body {
+      padding: 20px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      .category-badge {
+        display: inline-block;
+        background: #e2e8f0;
+        color: $slate;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      h3 {
+        margin: 0 0 10px 0;
+        font-size: 1.15rem;
+        line-height: 1.4;
+
+        a {
+          color: $dark;
+          text-decoration: none;
+          font-weight: 600;
+          &:hover { color: $primary; }
+        }
+      }
+
+      .description {
+        margin: 0 0 20px 0;
+        color: $slate;
+        font-size: 0.88rem;
+        line-height: 1.5;
+        
+        // CSS Webkit Line Clamp to smoothly restrict layout height safely
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .pricing-row {
+        display: flex;
+        align-items: baseline;
+        margin-bottom: 15px;
+        gap: 8px;
+
+        .price {
+          font-size: 1.4rem;
+          color: $success;
+          font-weight: 700;
+        }
+
+        .rating {
+          font-size: 0.85rem;
+          color: #94a3b8;
+        }
+      }
+
+      .add-to-cart-form {
+        .btn-submit {
+          background: $primary;
+          color: white;
+          border: none;
+          padding: 10px 16px;
+          font-size: 0.9rem;
+          font-weight: 600;
+          border-radius: $radius-sm;
+          cursor: pointer;
+          width: 100%;
+          transition: background 0.2s;
+
+          &:hover { background: $primary-hover; }
+        }
+      }
+    }
+  }
+
+  // Fallback empty view template mapping
+  .store-empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: $bg-light;
+    border-radius: $radius-md;
+    border: 2px dashed #cbd5e1;
+
+    p {
+      font-size: 1.2rem;
+      color: $slate;
+      margin: 0;
+    }
+
+    .btn-clear-filters {
+      display: inline-block;
+      margin-top: 12px;
+      color: $primary;
+      text-decoration: none;
+      font-weight: 600;
+      &:hover { text-decoration: underline; }
+    }
+  }
+}

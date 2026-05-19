@@ -1,0 +1,125 @@
+@import "../components/variables";
+
+.cart-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+
+  h2 {
+    color: $dark;
+    margin-bottom: 20px;
+  }
+
+  .cart-card {
+    border: 1px solid $border-color;
+    border-radius: $radius-md;
+    padding: 20px;
+    background: white;
+    box-shadow: $shadow;
+  }
+
+  .cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #f1f5f9;
+    padding: 15px 0;
+    
+    &:last-of-type { border-bottom: none; }
+
+    .cart-item-details {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+
+      .cart-item-image {
+        width: 60px;
+        height: 60px;
+        object-fit: contain;
+        background: $bg-light;
+        border-radius: $radius-sm;
+      }
+
+      .cart-item-text {
+        h4 {
+          margin: 0;
+          a {
+            color: #1e293b;
+            text-decoration: none;
+            &:hover { color: $primary; }
+          }
+        }
+        .unit-price {
+          margin: 4px 0 0 0;
+          color: $slate;
+          font-size: 0.9rem;
+        }
+      }
+    }
+
+    .cart-item-pricing {
+      text-align: right;
+      .quantity {
+        margin: 0;
+        font-weight: 600;
+        color: $dark;
+      }
+      .total-item-price {
+        margin: 4px 0 0 0;
+        color: $success;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .cart-summary {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 2px solid $border-color;
+    padding-top: 20px;
+
+    .total-label {
+      font-size: 1.1rem;
+      color: $slate;
+    }
+    .total-amount {
+      margin: 0;
+      color: $dark;
+    }
+
+    .btn-checkout {
+      background: $primary;
+      color: white;
+      text-decoration: none;
+      padding: 12px 24px;
+      font-weight: bold;
+      border-radius: $radius-sm;
+      box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+      transition: background 0.2s;
+      
+      &:hover { background: $primary-hover; }
+    }
+  }
+
+  .cart-empty-state {
+    text-align: center;
+    padding: 40px;
+    background: $bg-light;
+    border-radius: $radius-md;
+    border: 2px dashed #cbd5e1;
+
+    p {
+      color: $slate;
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+    }
+    .btn-shop-fallback {
+      color: $primary;
+      font-weight: bold;
+      text-decoration: none;
+      &:hover { text-decoration: underline; }
+    }
+  }
+}

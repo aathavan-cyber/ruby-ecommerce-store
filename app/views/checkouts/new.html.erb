@@ -1,0 +1,69 @@
+<!-- app/views/checkouts/new.html.erb -->
+<div class="checkout-container">
+  <div class="checkout-header">
+    <h2>Checkout</h2>
+    <p class="total-amount-display">Total Amount: <span><%= number_to_currency(@cart.total_price) %></span></p>
+  </div>
+
+  <%= form_with url: checkout_path, method: :post, local: true, id: "payment-form", class: "checkout-form" do |f| %>
+    
+    <h3>Select Payment Method</h3>
+    <div class="payment-toggle-group">
+      <label class="radio-label">
+        <%= f.radio_button :payment_method, "credit_card", checked: true, onclick: "togglePaymentFields('cc')" %> 
+        <span>Credit Card</span>
+      </label>
+      <label class="radio-label">
+        <%= f.radio_button :payment_method, "upi", onclick: "togglePaymentFields('upi')" %> 
+        <span>UPI</span>
+      </label>
+    </div>
+
+    <!-- Credit Card Fields -->
+    <div id="credit-card-fields" class="payment-method-fields">
+      <h4>Credit Card Information</h4>
+      <div class="form-group">
+        <%= f.label :card_number, "Card Number" %>
+        <%= f.text_field :card_number, placeholder: "1234 5678 1234 5678" %>
+      </div>
+    </div>
+
+    <!-- UPI Fields -->
+    <div id="upi-fields" class="payment-method-fields is-hidden">
+      <h4>UPI Information</h4>
+      <div class="form-group">
+        <%= f.label :upi_id, "UPI ID" %>
+        <%= f.text_field :upi_id, placeholder: "username@bank" %>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit "Pay Now", class: "btn-pay" %>
+    </div>
+  <% end %>
+</div>
+
+<script>
+  function togglePaymentFields(type) {
+    const ccFields = document.getElementById('credit-card-fields');
+    const upiFields = document.getElementById('upi-fields');
+    
+    if (type === 'cc') {
+      ccFields.classList.remove('is-hidden');
+      upiFields.classList.add('is-hidden');
+    } else {
+      ccFields.classList.add('is-hidden');
+      upiFields.classList.remove('is-hidden');
+    }
+  }
+
+  // 🔄 FIX: Runs automatically on load to keep the validation state visible
+  document.addEventListener("DOMContentLoaded", function() {
+    const selectedMethod = document.querySelector('input[name="payment_method"]:checked')?.value;
+    if (selectedMethod === 'upi') {
+      togglePaymentFields('upi');
+    } else {
+      togglePaymentFields('cc');
+    }
+  });
+</script>

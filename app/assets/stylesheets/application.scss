@@ -1,0 +1,40 @@
+// app/assets/stylesheets/application.scss
+
+// Core components & config
+@import "components/variables";
+@import "components/navbar";
+
+// Feature views layout sheets
+@import "pages/products";
+@import "pages/cart";
+@import "pages/checkout";
+@import "pages/product_detail";
+// Global body defaults
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  background: $bg-light;
+  color: $dark;
+}
+.main-content {
+  padding: 20px;
+}
+
+// Flash Alert Banners
+.flash-notice {
+  background: #dcfce7;
+  color: #15803d;
+  padding: 12px;
+  text-align: center;
+  font-weight: 500;
+  border-bottom: 1px solid #bbf7d0;
+}
+
+.flash-alert {
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 12px;
+  text-align: center;
+  font-weight: 500;
+  border-bottom: 1px solid #fecaca;
+}

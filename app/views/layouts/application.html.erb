@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ruby E-Commerce Store</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <!-- This core line loads Turbo and the Hotwire JavaScript framework -->
+    <%= javascript_importmap_tags if respond_to?(:javascript_importmap_tags) %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  </head>
+
+  <body>
+    <nav class="navbar">
+      <%= link_to "My Store", products_path, class: "logo" %>
+      
+      <div class="search-bar">
+        <%= form_with url: products_path, method: :get, local: true do |f| %>
+          <%= f.text_field :search, value: params[:search], placeholder: "Search products..." %>
+          <%= f.submit "Search" %>
+        <% end %>
+      </div>
+
+      <div class="nav-links">
+        <% if user_signed_in? %>
+          <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "btn-logout" %>
+        <% else %>
+          <%= link_to "Login", new_user_session_path %> | <%= link_to "Sign Up", new_user_registration_path %>
+        <% end %>
+        
+        <%= link_to cart_path(@current_cart), class: "cart-link" do %>
+          🛒 Cart (<span id="cart-count"><%= @current_cart.total_items %></span>)
+        <% end %>
+      </div>
+    </nav>
+
+    <!-- Flash notifications for Devise (Login/Logout messages) -->
+    <% if notice %>
+      <div class="flash-notice"><%= notice %></div>
+    <% end %>
+    <% if alert %>
+      <div class="flash-alert"><%= alert %></div>
+    <% end %>
+
+    <main class="main-content">
+      <%= yield %>
+    </main>
+  </body>
+</html>

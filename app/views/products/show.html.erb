@@ -1,0 +1,69 @@
+<!-- app/views/products/show.html.erb -->
+<div class="product-detail-container">
+  
+  <%= link_to "← Back to Storefront", products_path, class: "back-link" %>
+
+  <div class="product-layout">
+    
+    <!-- Left Hand Column: Media Visuals -->
+    <div class="product-media">
+      <% if @product.thumbnail.present? %>
+        <img src="<%= @product.thumbnail %>" alt="<%= @product.title %>" class="detail-image">
+      <% else %>
+        <span class="no-image-placeholder">No Product Image Loaded</span>
+      <% end %>
+    </div>
+
+    <!-- Right Hand Column: Content Core -->
+    <div class="product-meta-panel">
+      
+      <div class="meta-content-top">
+        <span class="category-pill">
+          <%= @product.category.titleize %>
+        </span>
+
+        <h1 class="product-title">
+          <%= @product.title %>
+        </h1>
+
+        <!-- Quick Rating Dashboard Row -->
+        <div class="rating-strip">
+          <span>⭐ <strong><%= @product.rating %></strong> / 5.00</span>
+          <span class="divider">|</span>
+          <span class="stock-indicator <%= @product.stock > 10 ? 'in-stock' : 'low-stock' %>">
+            📦 Only <%= @product.stock %> units available
+          </span>
+        </div>
+
+        <p class="product-description">
+          <%= @product.description %>
+        </p>
+
+        <!-- Dynamic Secondary Information Blocks -->
+        <% if @product.discount_percentage.present? && @product.discount_percentage > 0 %>
+          <div class="promo-banner">
+            <p>
+              🎉 Promotional Offer Active: Save <strong><%= @product.discount_percentage %>%</strong> off original catalog values instantly upon check-out!
+            </p>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Price Actions Footer Section -->
+      <div class="action-card">
+        <div class="price-row">
+          <span class="price-label">Price:</span>
+          <span class="price-value">
+            <%= number_to_currency(@product.price) %>
+          </span>
+        </div>
+        
+        <%= form_with url: cart_items_path(product_id: @product.id), method: :post, data: { turbo_stream: true }, class: "add-to-cart-form" do |f| %>
+          <%= f.submit "Add Item To Shopping Cart", class: "btn-add-detail" %>
+        <% end %>
+      </div>
+
+    </div>
+
+  </div>
+</div>

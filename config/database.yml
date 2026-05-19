@@ -1,0 +1,25 @@
+# config/database.yml
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  # For details on connection pooling, see Rails configuration guide
+  # https://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: ecomm
+  password: 12345678
+  host: localhost
+
+development:
+  <<: *default
+  database: ruby_ecommerce_development
+
+# The test database is used so your tests do not interfere with your development data
+test:
+  <<: *default
+  database: ruby_ecommerce_test
+
+# Production configuration usually relies on an environment variable URL
+production:
+  <<: *default
+  url: <%= ENV["DATABASE_URL"] %>

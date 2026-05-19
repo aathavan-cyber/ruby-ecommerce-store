@@ -1,0 +1,63 @@
+<!-- app/views/products/index.html.erb -->
+<div class="store-container">
+  
+  <div class="store-header">
+    <h1>Our Products</h1>
+    <p class="items-count"><%= @products.count %> items found</p>
+  </div>
+
+  <% if @products.any? %>
+    <div class="products-grid">
+      <% @products.each do |product| %>
+        <div class="product-card">
+          
+          <div class="image-container">
+            <% if product.thumbnail.present? %>
+              <img src="<%= product.thumbnail %>" alt="<%= product.title %>">
+            <% else %>
+              <div class="no-image">No Image Available</div>
+            <% end %>
+          </div>
+
+          <div class="card-body">
+            <div class="card-details">
+              <span class="category-badge">
+                <%= product.category.titleize %>
+              </span>
+              
+              <h3>
+                <%= link_to product.title, product_path(product) %>
+              </h3>
+              
+              <p class="description">
+                <%= product.description %>
+              </p>
+            </div>
+
+            <div class="card-actions">
+              <div class="pricing-row">
+                <span class="price">
+                  <%= number_to_currency(product.price) %>
+                </span>
+                <span class="rating">
+                  ⭐ <%= product.rating %>
+                </span>
+              </div>
+
+              <%= form_with url: cart_items_path(product_id: product.id), method: :post, data: { turbo_stream: true }, class: "add-to-cart-form" do |f| %>
+                <%= f.submit "Add to Cart", class: "btn-submit" %>
+              <% end %>
+            </div>
+          </div>
+
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="store-empty-state">
+      <p>No products match your search criteria.</p>
+      <%= link_to "Clear filters", products_path, class: "btn-clear-filters" %>
+    </div>
+  <% end %>
+
+</div>

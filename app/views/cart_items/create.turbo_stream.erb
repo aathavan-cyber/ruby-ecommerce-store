@@ -1,0 +1,4 @@
+<!-- app/views/cart_items/create.turbo_stream.erb -->
+<%= turbo_stream.replace "cart-count" do %>
+  <span id="cart-count"><%= @current_cart.total_items %></span>
+<% end %>
