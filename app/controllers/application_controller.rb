@@ -29,8 +29,14 @@ class ApplicationController < ActionController::Base
             end
           end
           
-          # Clean up the empty guest cart from the database
-          guest_cart.destroy
+          # CRITICAL: Force ActiveRecord to refresh its collection memory from the database 
+          # so it recognizes the newly migrated items before the guest cart structure changes.
+          user_cart.cart_items.reload
+          
+          # CRITICAL: Use .delete instead of .destroy. This cleans up the empty guest cart 
+          # row from the database without triggering dependent model callbacks that could 
+          # accidentally target the items we just transferred.
+          guest_cart.delete
         end
         
         # Clear the guest session completely now that they are logged in

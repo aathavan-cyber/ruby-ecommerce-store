@@ -19,19 +19,10 @@ RSpec.describe Cart, type: :model do
 
   describe 'dependent behavior' do
     it 'destroys associated cart_items when destroyed' do
-      cart = Cart.create!
-      product = Product.create!(
-        title: "CartSpec Product",
-        description: "desc",
-        category: "spec",
-        price: 1.0,
-        discount_percentage: 0.0,
-        rating: 0.0,
-        stock: 1,
-        thumbnail: "t.jpg"
-      )
+      cart = create(:cart)
+      product = create(:product, title: "CartSpec Product")
 
-      cart_item = CartItem.create!(cart: cart, product: product, quantity: 1)
+      cart_item = create(:cart_item, cart: cart, product: product, quantity: 1)
 
       expect(CartItem.exists?(cart_item.id)).to be true
       expect { cart.destroy }.to change { CartItem.exists?(cart_item.id) }.from(true).to(false)

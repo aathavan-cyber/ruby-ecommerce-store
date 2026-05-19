@@ -3,25 +3,12 @@ require 'rails_helper'
 RSpec.describe "Checkouts", type: :request do
   include Devise::Test::IntegrationHelpers
 
-  let(:user) do
-    User.create!(email: "test@example.com", password: "password")
-  end
+  let(:user) { create(:user, email: "test@example.com") }
 
-  let(:product) do
-    Product.create!(
-      title: "Sample Product",
-      description: "A test product",
-      category: "Test",
-      price: 10.0,
-      discount_percentage: 0.0,
-      rating: 0.0,
-      stock: 10,
-      thumbnail: "sample.jpg"
-    )
-  end
+  let(:product) { create(:product, title: "Sample Product", price: 10.0, stock: 10) }
 
-  let(:cart) { Cart.create!(user: user) }
-  let!(:cart_item) { CartItem.create!(cart: cart, product: product, quantity: 1) }
+  let(:cart) { create(:cart, user: user) }
+  let!(:cart_item) { create(:cart_item, cart: cart, product: product, quantity: 1) }
 
   before do
     sign_in user

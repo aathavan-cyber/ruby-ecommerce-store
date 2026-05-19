@@ -16,8 +16,8 @@ RSpec.describe User, type: :model do
 
   describe 'dependent behavior' do
     it 'destroys the associated cart when the user is destroyed' do
-      user = User.create!(email: 'spec-user@example.com', password: 'password')
-      cart = user.create_cart!
+      user = create(:user, email: 'spec-user@example.com')
+      cart = create(:cart, user: user)
 
       expect(Cart.exists?(cart.id)).to be true
       expect { user.destroy }.to change { Cart.exists?(cart.id) }.from(true).to(false)

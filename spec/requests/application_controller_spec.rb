@@ -1,3 +1,4 @@
+# spec/requests/application_controller_spec.rb
 require 'rails_helper'
 
 RSpec.describe "ApplicationController#set_cart", type: :request do
@@ -5,16 +6,7 @@ RSpec.describe "ApplicationController#set_cart", type: :request do
   include Warden::Test::Helpers
 
   let(:product) do
-    Product.create!(
-      title: "Spec Product",
-      description: "description",
-      category: "spec",
-      price: 5.0,
-      discount_percentage: 0.0,
-      rating: 0.0,
-      stock: 5,
-      thumbnail: "t.jpg"
-    )
+    create(:product, title: "Spec Product", price: 5.0, stock: 5)
   end
 
   it "creates a new cart for a guest and stores it (guest cart exists)" do
@@ -26,31 +18,36 @@ RSpec.describe "ApplicationController#set_cart", type: :request do
     expect(cart.user_id).to be_nil
   end
 
-  it "migrates guest cart items to the current_user's cart upon login" do
-    guest_cart = Cart.create!
-    CartItem.create!(cart: guest_cart, product: product, quantity: 2)
+  context "when handling an existing guest cart session" do
+    let(:user) { create(:user, email: "migrate@example.com") }
+    let!(:guest_cart) { create(:cart) }
+    let!(:cart_item) { create(:cart_item, cart: guest_cart, product: product, quantity: 2) }
 
-    user = User.create!(email: "migrate@example.com", password: "password")
+    before do
+      # Dynamically inject the session parameter into the controller instance
+      # right as it processes the request, keeping Devise authentication fully intact.
+      allow_any_instance_of(ApplicationController).to receive(:session).and_wrap_original do |original_method, *args|
+        session_hash = original_method.call(*args)
+        session_hash[:cart_id] = guest_cart.id
+        session_hash
+      end
+      
+      login_as(user, scope: :user)
+    end
 
-    gid = guest_cart.id
-    login_as(user, scope: :user)
-    get root_path, env: { 'rack.session' => { cart_id: gid } }
+    it "migrates guest cart items to the current_user's cart upon login" do
+      get root_path
 
-    user.reload
-    expect(user.cart).to be_present
-    expect(user.cart.cart_items.sum(:quantity)).to eq(2)
-  end
+      user.reload
 
-  it "destroys the old guest cart and clears session data after merge" do
-    guest_cart = Cart.create!
-    CartItem.create!(cart: guest_cart, product: product, quantity: 1)
+      expect(user.cart).to be_present
+      expect(user.cart.cart_items.sum(:quantity)).to eq(2)
+    end
 
-    user = User.create!(email: "destroy@example.com", password: "password")
+    it "destroys the old guest cart and clears session data after merge" do
+      get root_path
 
-    gid = guest_cart.id
-    login_as(user, scope: :user)
-    get root_path, env: { 'rack.session' => { cart_id: gid } }
-
-    expect(Cart.find_by(id: guest_cart.id)).to be_nil
+      expect(Cart.find_by(id: guest_cart.id)).to be_nil
+    end
   end
 end
